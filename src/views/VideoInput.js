@@ -36,7 +36,7 @@ class VideoInput extends Component {
         device => device.kind === 'videoinput'
       );
       console.log(inputDevice)
-      if (inputDevice.length < 2) {
+      if (inputDevice.length > 1) {
         await this.setState({
           facingMode: 'user'
         });
