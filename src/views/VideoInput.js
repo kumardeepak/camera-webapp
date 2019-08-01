@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 // import { withRouter } from 'react-router-dom';
 import Webcam from 'react-webcam';
+import 'text-encoding-polyfill'
+import '@expo/browser-polyfill'
+import '@babel/polyfill'
 import { loadModels, getFullFaceDescription, createMatcher } from '../api/face';
 
 // Import face profile
