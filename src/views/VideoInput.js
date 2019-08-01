@@ -37,15 +37,18 @@ class VideoInput extends Component {
         device => device.kind === 'videoinput'
       );
       console.log(inputDevice)
-      if (inputDevice.length >= 1) {
-        await this.setState({
-          facingMode: 'user'
-        });
-      } else {
-        await this.setState({
-          facingMode: { exact: 'environment' }
-        });
-      }
+      await this.setState({
+        facingMode: 'user'
+      });
+      // if (inputDevice.length < 2) {
+      //   await this.setState({
+      //     facingMode: 'user'
+      //   });
+      // } else {
+      //   await this.setState({
+      //     facingMode: { exact: 'environment' }
+      //   });
+      // }
       this.startCapture();
     });
   };
