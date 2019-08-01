@@ -4,15 +4,12 @@
   "private": true,
   "homepage": "https://kumardeepak.github.io/camera-webapp",
   "dependencies": {
-    "babel-polyfill": "^6.26.0",
-    "core-js": "^3.1.4",
-    "face-api.js": "^0.20.1",
+    "face-api.js": "^0.17.0",
     "gh-pages": "^2.0.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1",
-    "react-webcam": "^1.1.1",
-    "regenerator-runtime": "^0.13.3"
+    "react-webcam": "^1.1.1"
   },
   "scripts": {
     "start": "react-scripts start",
