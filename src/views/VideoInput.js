@@ -27,7 +27,7 @@ class VideoInput extends Component {
 
   componentWillMount = async () => {
     await loadModels();
-    this.setState({ faceMatcher: await createMatcher(JSON_PROFILE) });
+    // this.setState({ faceMatcher: await createMatcher(JSON_PROFILE) });
     this.setInputDevice();
   };
 
@@ -72,17 +72,17 @@ class VideoInput extends Component {
         if (!!fullDesc) {
           this.setState({
             detections: fullDesc.map(fd => fd.detection),
-            descriptors: fullDesc.map(fd => fd.descriptor)
+            // descriptors: fullDesc.map(fd => fd.descriptor)
           });
         }
       });
 
-      if (!!this.state.descriptors && !!this.state.faceMatcher) {
-        let match = await this.state.descriptors.map(descriptor =>
-          this.state.faceMatcher.findBestMatch(descriptor)
-        );
-        this.setState({ match });
-      }
+      // if (!!this.state.descriptors && !!this.state.faceMatcher) {
+      //   let match = await this.state.descriptors.map(descriptor =>
+      //     this.state.faceMatcher.findBestMatch(descriptor)
+      //   );
+      //   this.setState({ match });
+      // }
     }
   };
 
