@@ -12,6 +12,7 @@
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1",
     "react-webcam": "^1.1.1",
+    "text-encoding": "^0.7.0",
     "text-encoding-polyfill": "^0.6.7"
   },
   "scripts": {
