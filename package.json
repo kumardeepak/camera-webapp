@@ -4,10 +4,10 @@
   "private": true,
   "homepage": "https://kumardeepak.github.io/camera-webapp",
   "dependencies": {
+    "face-api.js": "^0.20.1",
     "gh-pages": "^2.0.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-html5-camera-photo": "^1.4.3",
     "react-scripts": "3.0.1",
     "react-webcam": "^1.1.1"
   },

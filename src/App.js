@@ -1,47 +1,20 @@
 import React, { Component } from 'react';
-import Camera, { FACING_MODES, IMAGE_TYPES } from 'react-html5-camera-photo';
-import 'react-html5-camera-photo/build/css/index.css';
- 
+// import { Route, Router } from 'react-router-dom';
+// import createHistory from 'history/createBrowserHistory';
+import './App.css';
+
+// import Home from './views/Home';
+// import ImageInput from './views/ImageInput';
+import VideoInput from './views/VideoInput';
+
 class App extends Component {
-  onTakePhoto (dataUri) {
-    // Do stuff with the photo...
-    console.log('takePhoto', dataUri);
-  }
- 
-  onCameraError (error) {
-    console.error('onCameraError', error);
-  }
- 
-  onCameraStart (stream) {
-    console.log('onCameraStart');
-  }
- 
-  onCameraStop () {
-    console.log('onCameraStop');
-  }
- 
-  render () {
+  render() {
     return (
       <div className="App">
-        <Camera
-          onTakePhoto = { (dataUri) => { this.onTakePhoto(dataUri); } }
-          onCameraError = { (error) => { this.onCameraError(error); } }
-          idealFacingMode = {FACING_MODES.USER}
-          idealResolution = {{width: 640, height: 480}}
-          imageType = {IMAGE_TYPES.JPG}
-          imageCompression = {0.97}
-          isMaxResolution = {false}
-          isImageMirror = {true}
-          isSilentMode = {true}
-          isDisplayStartCameraError = {true}
-          isFullscreen = {false}
-          sizeFactor = {1}
-          onCameraStart = { (stream) => { this.onCameraStart(stream); } }
-          onCameraStop = { () => { this.onCameraStop(); } }
-        />
+        <VideoInput />
       </div>
     );
   }
 }
- 
+
 export default App;
