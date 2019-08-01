@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/camera-webapp/static/css/main.2cce8147.chunk.css",
-    "main.js": "/camera-webapp/static/js/main.c2745387.chunk.js",
-    "main.js.map": "/camera-webapp/static/js/main.c2745387.chunk.js.map",
+    "main.js": "/camera-webapp/static/js/main.6ce0b2cc.chunk.js",
+    "main.js.map": "/camera-webapp/static/js/main.6ce0b2cc.chunk.js.map",
     "runtime~main.js": "/camera-webapp/static/js/runtime~main.cb8ced1e.js",
     "runtime~main.js.map": "/camera-webapp/static/js/runtime~main.cb8ced1e.js.map",
     "static/js/2.1dca15c3.chunk.js": "/camera-webapp/static/js/2.1dca15c3.chunk.js",
     "static/js/2.1dca15c3.chunk.js.map": "/camera-webapp/static/js/2.1dca15c3.chunk.js.map",
     "index.html": "/camera-webapp/index.html",
-    "precache-manifest.12165351db5d9de1092eff1291e58d39.js": "/camera-webapp/precache-manifest.12165351db5d9de1092eff1291e58d39.js",
+    "precache-manifest.4c60ffd29b45f6ad21b56e1b51913825.js": "/camera-webapp/precache-manifest.4c60ffd29b45f6ad21b56e1b51913825.js",
     "service-worker.js": "/camera-webapp/service-worker.js",
     "static/css/main.2cce8147.chunk.css.map": "/camera-webapp/static/css/main.2cce8147.chunk.css.map"
   }
