@@ -35,6 +35,7 @@ class VideoInput extends Component {
       let inputDevice = await devices.filter(
         device => device.kind === 'videoinput'
       );
+      console.log(inputDevice)
       if (inputDevice.length < 2) {
         await this.setState({
           facingMode: 'user'
@@ -83,6 +84,8 @@ class VideoInput extends Component {
 
   render() {
     const { detections, match, facingMode } = this.state;
+    console.log(match)
+    console.log(facingMode)
     let videoConstraints = null;
     let camera = '';
     if (!!facingMode) {
@@ -129,7 +132,7 @@ class VideoInput extends Component {
                     transform: `translate(-3px,${_H}px)`
                   }}
                 >
-                  {match[i]._label}
+                  {match[i]._label === 'unknown' ? 'human face' : match[i]._label}
                 </p>
               ) : null}
             </div>
