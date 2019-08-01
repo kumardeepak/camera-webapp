@@ -101,10 +101,10 @@ class VideoInput extends Component {
     let drawBox = null;
     if (!!detections) {
       drawBox = detections.map((detection, i) => {
-        let _H = detection.box.height;
+        let _H = detection.box.height + 50;
         let _W = detection.box.width;
         let _X = detection.box._x;
-        let _Y = detection.box._y;
+        let _Y = detection.box._y - 50;
         return (
           <div key={i}>
             <div
