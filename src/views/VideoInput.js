@@ -1,17 +1,8 @@
 import React, { Component } from 'react';
 // import { withRouter } from 'react-router-dom';
 import Webcam from 'react-webcam';
-import 'text-encoding-polyfill'
-import '@expo/browser-polyfill'
-import '@babel/polyfill'
-import { TextDecoder,TextEncoder } from 'text-encoding';
-if (!window['TextDecoder']) {
-  window['TextDecoder'] = TextDecoder;
-}
-if (!window['TextEncoder']) {
-  window['TextEncoder'] = TextEncoder;
-}
 import { loadModels, getFullFaceDescription, createMatcher } from '../api/face';
+
 
 // Import face profile
 const JSON_PROFILE = require('../descriptors/bnk48.json');
