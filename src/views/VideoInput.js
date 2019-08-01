@@ -4,9 +4,12 @@ import Webcam from 'react-webcam';
 import 'text-encoding-polyfill'
 import '@expo/browser-polyfill'
 import '@babel/polyfill'
-import { TextDecoder } from 'text-encoding';
+import { TextDecoder,TextEncoder } from 'text-encoding';
 if (!window['TextDecoder']) {
   window['TextDecoder'] = TextDecoder;
+}
+if (!window['TextEncoder']) {
+  window['TextEncoder'] = TextEncoder;
 }
 import { loadModels, getFullFaceDescription, createMatcher } from '../api/face';
 
