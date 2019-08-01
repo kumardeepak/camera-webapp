@@ -13,8 +13,6 @@ class VideoInput extends Component {
     this.state = {
       fullDesc: null,
       detections: null,
-      descriptors: null,
-      faceMatcher: null,
       match: null,
       facingMode: null
     };
@@ -74,8 +72,6 @@ class VideoInput extends Component {
 
   render() {
     const { detections, match, facingMode } = this.state;
-    console.log(match)
-    console.log(facingMode)
     let videoConstraints = null;
     let camera = '';
     if (!!facingMode) {
@@ -94,10 +90,10 @@ class VideoInput extends Component {
     let drawBox = null;
     if (!!detections) {
       drawBox = detections.map((detection, i) => {
-        let _H = detection.box.height + 50;
+        let _H = detection.box.height;
         let _W = detection.box.width;
         let _X = detection.box._x;
-        let _Y = detection.box._y - 50;
+        let _Y = detection.box._y;
         return (
           <div key={i}>
             <div
