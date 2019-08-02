@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import Webcam from 'react-webcam';
 import { loadModels, getFullFaceDescription } from '../api/face';
 
-const WIDTH = 320;
-const HEIGHT = 480;
+const WIDTH = 420;
+const HEIGHT = 420;
 const inputSize = 160;
 
 class VideoInput extends Component {
