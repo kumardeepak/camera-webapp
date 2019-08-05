@@ -69,8 +69,31 @@ class VideoInput extends Component {
     }
   };
 
+  renderSupportingMessageAndAudioMessage = (message) => {
+    return (
+      <div>
+      <p
+        style={{
+          backgroundColor: 'blue',
+          border: 'solid',
+          borderColor: 'blue',
+          width: WIDTH,
+          marginTop: 0,
+          color: '#fff',
+          transform: `translate(-3px,${60}px)`
+        }}
+      >
+        {message}
+      </p>
+      </div>
+    )
+  }
+
   render() {
-    const { detections, match, facingMode } = this.state;
+    const { detections, facingMode } = this.state;
+    let message = 'face'
+    let info_message = 'please bring your face near to camera'
+
     let videoConstraints = null;
     let camera = '';
     if (!!facingMode) {
@@ -79,6 +102,7 @@ class VideoInput extends Component {
         height: HEIGHT,
         facingMode: facingMode
       };
+
       if (facingMode === 'user') {
         camera = 'Front';
       } else {
@@ -105,21 +129,19 @@ class VideoInput extends Component {
                 transform: `translate(${_X}px,${_Y}px)`
               }}
             >
-              {!!match && !!match[i] ? (
-                <p
-                  style={{
-                    backgroundColor: 'blue',
-                    border: 'solid',
-                    borderColor: 'blue',
-                    width: _W,
-                    marginTop: 0,
-                    color: '#fff',
-                    transform: `translate(-3px,${_H}px)`
-                  }}
-                >
-                  {match[i]._label === 'unknown' ? 'human face' : match[i]._label}
-                </p>
-              ) : null}
+              <p
+                style={{
+                  backgroundColor: 'blue',
+                  border: 'solid',
+                  borderColor: 'blue',
+                  width: _W,
+                  marginTop: 0,
+                  color: '#fff',
+                  transform: `translate(-3px,${_H}px)`
+                }}
+              >
+                {message}
+              </p>
             </div>
           </div>
         );
@@ -156,6 +178,7 @@ class VideoInput extends Component {
               </div>
             ) : null}
             {!!drawBox ? drawBox : null}
+            {(detections && detections.length > 0) ? null : this.renderSupportingMessageAndAudioMessage(info_message)}
           </div>
         </div>
       </div>
