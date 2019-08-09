@@ -62,8 +62,8 @@ class VideoInput extends Component {
         inputSize
       ).then(fullDesc => {
         if (!!fullDesc) {
-          if (this.props.capturedImage && {}.toString.call(this.props.capturedImage) === '[object Function]') {
-            this.props.capturedImage(this.webcam.current.getScreenshot())
+          if (window.getCapturedImage && {}.toString.call(window.getCapturedImage) === '[object Function]') {
+            window.getCapturedImage(this.webcam.current.getScreenshot())
           }
           this.setState({
             detections: fullDesc.map(fd => fd.detection),
