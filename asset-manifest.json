@@ -1,15 +1,16 @@
 {
   "files": {
     "main.css": "/camera-webapp/static/css/main.2cce8147.chunk.css",
-    "main.js": "/camera-webapp/static/js/main.c8a3ff80.chunk.js",
-    "main.js.map": "/camera-webapp/static/js/main.c8a3ff80.chunk.js.map",
+    "main.js": "/camera-webapp/static/js/main.81009b42.chunk.js",
+    "main.js.map": "/camera-webapp/static/js/main.81009b42.chunk.js.map",
     "runtime~main.js": "/camera-webapp/static/js/runtime~main.cb8ced1e.js",
     "runtime~main.js.map": "/camera-webapp/static/js/runtime~main.cb8ced1e.js.map",
-    "static/js/2.c55de351.chunk.js": "/camera-webapp/static/js/2.c55de351.chunk.js",
-    "static/js/2.c55de351.chunk.js.map": "/camera-webapp/static/js/2.c55de351.chunk.js.map",
+    "static/js/2.9355dba7.chunk.js": "/camera-webapp/static/js/2.9355dba7.chunk.js",
+    "static/js/2.9355dba7.chunk.js.map": "/camera-webapp/static/js/2.9355dba7.chunk.js.map",
     "index.html": "/camera-webapp/index.html",
-    "precache-manifest.0f33e587b1c9bc5c6545e5bb471b237f.js": "/camera-webapp/precache-manifest.0f33e587b1c9bc5c6545e5bb471b237f.js",
+    "precache-manifest.94dac2ead7fce7a6adebf6ffee1e55e6.js": "/camera-webapp/precache-manifest.94dac2ead7fce7a6adebf6ffee1e55e6.js",
     "service-worker.js": "/camera-webapp/service-worker.js",
-    "static/css/main.2cce8147.chunk.css.map": "/camera-webapp/static/css/main.2cce8147.chunk.css.map"
+    "static/css/main.2cce8147.chunk.css.map": "/camera-webapp/static/css/main.2cce8147.chunk.css.map",
+    "static/media/overlay.png": "/camera-webapp/static/media/overlay.1941a11b.png"
   }
 }
