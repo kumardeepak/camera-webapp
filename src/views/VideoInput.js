@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Webcam from 'react-webcam';
 import { loadModels, getFullFaceDescription } from '../api/face';
+import overlayImage from '../images/overlay.png';
 
 const WIDTH = 420;
 const HEIGHT = 420;
@@ -61,6 +62,9 @@ class VideoInput extends Component {
         inputSize
       ).then(fullDesc => {
         if (!!fullDesc) {
+          if (this.props.capturedImage && {}.toString.call(this.props.capturedImage) === '[object Function]') {
+            this.props.capturedImage(this.webcam.current.getScreenshot())
+          }
           this.setState({
             detections: fullDesc.map(fd => fd.detection),
           });
@@ -91,7 +95,7 @@ class VideoInput extends Component {
 
   render() {
     const { detections, facingMode } = this.state;
-    let message = 'face'
+    // let message = 'face'
     let info_message = 'please bring your face near to camera'
 
     let videoConstraints = null;
@@ -110,42 +114,47 @@ class VideoInput extends Component {
       }
     }
 
-    let drawBox = null;
-    if (!!detections) {
-      drawBox = detections.map((detection, i) => {
-        let _H = detection.box.height;
-        let _W = detection.box.width;
-        let _X = detection.box._x;
-        let _Y = detection.box._y;
-        return (
-          <div key={i}>
-            <div
-              style={{
-                position: 'absolute',
-                border: 'solid',
-                borderColor: 'blue',
-                height: _H,
-                width: _W,
-                transform: `translate(${_X}px,${_Y}px)`
-              }}
-            >
-              <p
-                style={{
-                  backgroundColor: 'blue',
-                  border: 'solid',
-                  borderColor: 'blue',
-                  width: _W,
-                  marginTop: 0,
-                  color: '#fff',
-                  transform: `translate(-3px,${_H}px)`
-                }}
-              >
-                {message}
-              </p>
-            </div>
-          </div>
-        );
-      });
+    // let drawBox = null;
+    // if (!!detections) {
+    //   drawBox = detections.map((detection, i) => {
+    //     let _H = detection.box.height;
+    //     let _W = detection.box.width;
+    //     let _X = detection.box._x;
+    //     let _Y = detection.box._y;
+    //     return (
+    //       <div key={i}>
+    //         <div
+    //           style={{
+    //             position: 'absolute',
+    //             border: 'solid',
+    //             borderColor: 'blue',
+    //             height: _H,
+    //             width: _W,
+    //             transform: `translate(${_X}px,${_Y}px)`
+    //           }}
+    //         >
+    //           <p
+    //             style={{
+    //               backgroundColor: 'blue',
+    //               border: 'solid',
+    //               borderColor: 'blue',
+    //               width: _W,
+    //               marginTop: 0,
+    //               color: '#fff',
+    //               transform: `translate(-3px,${_H}px)`
+    //             }}
+    //           >
+    //             {message}
+    //           </p>
+    //         </div>
+    //       </div>
+    //     );
+    //   });
+    // }
+
+    if (detections && detections.length > 0) {
+      // console.log(detections[0].score)
+      // console.log(detections)
     }
 
     return (
@@ -164,9 +173,14 @@ class VideoInput extends Component {
             height: HEIGHT
           }}
         >
-          <div style={{ position: 'relative', width: WIDTH }}>
+          <div style={{ position: 'relative', width: WIDTH}}>
             {!!videoConstraints ? (
               <div style={{ position: 'absolute' }}>
+              <div style={{ position:'absolute', 
+                            width:WIDTH,
+                            height:HEIGHT,
+                            backgroundImage:`url(${overlayImage})`
+                          }}></div>
                 <Webcam
                   audio={false}
                   width={WIDTH}
@@ -177,7 +191,6 @@ class VideoInput extends Component {
                 />
               </div>
             ) : null}
-            {!!drawBox ? drawBox : null}
             {(detections && detections.length > 0) ? null : this.renderSupportingMessageAndAudioMessage(info_message)}
           </div>
         </div>

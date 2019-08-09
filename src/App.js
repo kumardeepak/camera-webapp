@@ -4,10 +4,11 @@ import './App.css';
 import VideoInput from './views/VideoInput';
 
 class App extends Component {
+
   render() {
     return (
       <div className="App">
-        <VideoInput />
+        <VideoInput capturedImage={this.props.capturedImage}/>
       </div>
     );
   }
