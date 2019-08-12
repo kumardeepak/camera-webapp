@@ -5,6 +5,7 @@ import { loadModels, getFullFaceDescription } from '../api/face';
 const WIDTH = 600;
 const HEIGHT = 600;
 const inputSize = 160;
+const FACE_AREA_THRESHOLD = 70000
 
 class VideoInput extends Component {
   constructor(props) {
@@ -14,7 +15,8 @@ class VideoInput extends Component {
       fullDesc: null,
       detections: null,
       match: null,
-      facingMode: null
+      facingMode: null,
+      displayMessage: null
     };
   }
 
@@ -49,8 +51,10 @@ class VideoInput extends Component {
         inputSize
       ).then(fullDesc => {
         if (!!fullDesc) {
-          if (window.getCapturedImage && {}.toString.call(window.getCapturedImage) === '[object Function]') {
-            window.getCapturedImage(this.webcam.current.getScreenshot())
+          if(this.processCapturePostProcessing(fullDesc.map(fd => fd.detection))) {
+            if (window.getCapturedImage && {}.toString.call(window.getCapturedImage) === '[object Function]') {
+              window.getCapturedImage(this.webcam.current.getScreenshot())
+            }
           }
           this.setState({
             detections: fullDesc.map(fd => fd.detection),
@@ -59,6 +63,44 @@ class VideoInput extends Component {
       });
     }
   };
+
+  processCapturePostProcessing = (detections) => {
+    let no_face_message             = 'please bring your face near to camera'
+    let less_face_area_message      = 'please come near to camera, looks like you are bit from the camera'
+    let face_out_of_frame_message   = 'your full face is not getting captured, please align'
+  
+    if (!detections || (detections && detections.length === 0)) {
+      this.setState({
+        displayMessage: no_face_message
+      })
+      return false
+    }
+  
+    let box = detections.map((detection, i) => {
+      let _H = detection.box.height + 50;
+      let _W = detection.box.width;
+      let _X = detection.box._x;
+      let _Y = detection.box._y - 80;
+      return {
+        H: _H, W: _W, X: _X, Y: _Y, A: detection.box.area
+      }
+    })
+    if (parseFloat(box[0]['Y']) < 0.0 || parseFloat(box[0]['X']) < 0.0) {
+      this.setState({
+        displayMessage: face_out_of_frame_message
+      })
+      return false
+    }
+
+    if (parseFloat(box[0]['A']) < FACE_AREA_THRESHOLD) {
+      this.setState({
+        displayMessage: less_face_area_message
+      })
+      return false
+    }
+
+    return true
+  }
 
   informationMessage = (message) => {
     return (
@@ -90,34 +132,28 @@ class VideoInput extends Component {
 
   }
 
-  processDetectionCriterion = (detections) => {
-    let no_face_message         = 'please bring your face near to camera'
-    let less_face_area_message  = 'please come near to camera, looks like you are bit from the camera'
-    let face_going_out_message  = 'your full face is not getting captured, please align'
-    let face_area_threshold     = 70000;
+  renderDetectionMessages = (detections) => {
 
     if (!detections || (detections && detections.length === 0)) {
-      return this.informationMessage(no_face_message)
+      return this.informationMessage(this.state.displayMessage)
     }
 
     let box = detections.map((detection, i) => {
-      let _H = detection.box.height;
+      let _H = detection.box.height + 50;
       let _W = detection.box.width;
       let _X = detection.box._x;
-      let _Y = detection.box._y;
+      let _Y = detection.box._y - 80;
       return {
         H: _H, W: _W, X: _X, Y: _Y, A: detection.box.area
       }
     })
 
-    if (box && box.length === 1 ) {
-      if (parseFloat(box[0]['Y']) < 0.0) {
-        return this.informationMessage(face_going_out_message)
-      }
+    if (parseFloat(box[0]['Y']) < 0.0 || parseFloat(box[0]['X']) < 0.0) {
+      return this.informationMessage(this.state.displayMessage)
+    }
 
-      if (parseFloat(box[0]['A']) < face_area_threshold) {
-        return this.informationMessage(less_face_area_message)
-      }
+    if (parseFloat(box[0]['A']) < FACE_AREA_THRESHOLD) {
+      return this.informationMessage(this.state.displayMessage)
     }
 
     // all good, draw the box
@@ -142,7 +178,6 @@ class VideoInput extends Component {
         </div>
       );
     });
-    
   }
 
   render() {
@@ -173,7 +208,7 @@ class VideoInput extends Component {
                 />
               </div>
             ) : null}
-            {this.processDetectionCriterion(detections)}
+            {this.renderDetectionMessages(detections)}
           </div>
         </div>
       </div>
