@@ -13,7 +13,7 @@ const no_face_message               = 'please bring your face near to camera'
 const less_face_area_message        = 'please come near to camera, looks like you are bit from the camera'
 const face_out_of_frame_message     = 'your full face is not getting captured, please align'
 const brightness_inadequate_message = 'please enable camera flash or move to a brighter place'
-const capture_complete_message      = 'we have capture the relevant images'
+const capture_complete_message      = 'we have captured the relevant images'
 
 class VideoInput extends Component {
   constructor(props) {
