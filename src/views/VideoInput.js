@@ -143,7 +143,10 @@ class VideoInput extends Component {
         H: _H, W: _W, X: _X, Y: _Y, A: detection.box.area
       }
     })
-    if (parseFloat(box[0]['Y']) < 0.0 || parseFloat(box[0]['X']) < 0.0) {
+
+    if ((parseFloat(box[0]['Y']) < 0.0) || (parseFloat(box[0]['X']) < 0.0) || 
+        (parseFloat(box[0]['X']) + parseFloat(box[0]['W']) > (WIDTH - 50)) ||
+        (parseFloat(box[0]['Y']) + parseFloat(box[0]['H']) > (HEIGHT - 50))) {
       this.setState({
         displayMessage: face_out_of_frame_message
       })
@@ -218,7 +221,9 @@ class VideoInput extends Component {
       }
     })
 
-    if (parseFloat(box[0]['Y']) < 0.0 || parseFloat(box[0]['X']) < 0.0) {
+    if ((parseFloat(box[0]['Y']) < 0.0) || (parseFloat(box[0]['X']) < 0.0) || 
+        (parseFloat(box[0]['X']) + parseFloat(box[0]['W']) > (WIDTH - 50)) ||
+        (parseFloat(box[0]['Y']) + parseFloat(box[0]['H']) > (HEIGHT - 50))) {
       return this.informationMessage(this.state.displayMessage)
     }
 
