@@ -8,7 +8,7 @@ const HEIGHT                        = 600;
 const inputSize                     = 160;
 const FACE_AREA_THRESHOLD           = 35000
 const BRIGHTNESS_THRESHOLD          = 60
-const MAX_IMAGE_CAPTURES            = 3
+const MAX_IMAGE_CAPTURES            = 6
 const no_face_message               = 'please bring your face near to camera'
 const less_face_area_message        = 'please come near to camera, looks like you are bit from the camera'
 const face_out_of_frame_message     = 'your full face is not getting captured, please align'
@@ -94,7 +94,7 @@ class VideoInput extends Component {
   }
 
   renderImageURL = () => {
-    if (this.state.capturedCount >= 3) {
+    if (this.state.capturedCount >= MAX_IMAGE_CAPTURES) {
       return(
         <div>
           {this.state.capturedImages.map(image => <a key={uuidv4()} download={`${uuidv4()}.jpeg`} href={image}> Download </a>)}
@@ -183,7 +183,7 @@ class VideoInput extends Component {
   }
 
   debugMessage = (detections) => {
-    if (this.state.capturedCount >= 3) {
+    if (this.state.capturedCount >= MAX_IMAGE_CAPTURES) {
       return this.renderImageURL()
     } else {
       if (!detections || (detections && detections.length === 0)) {
@@ -259,7 +259,6 @@ class VideoInput extends Component {
   }
 
   render() {
-    console.log(this.state)
     const { detections, facingMode } = this.state;
     let videoConstraints = null;
     if (!!facingMode) {
