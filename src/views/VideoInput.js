@@ -189,7 +189,7 @@ class VideoInput extends Component {
       if (!detections || (detections && detections.length === 0)) {
         return (<p>Camera: front</p>)
       }
-  
+
       let box = detections.map((detection, i) => {
         let _H = detection.box.height + 50;
         let _W = detection.box.width;
@@ -227,13 +227,13 @@ class VideoInput extends Component {
     }
 
     if (this.state.brightness !== 0 && this.state.displayMessage != null) {
-      return this.informationMessage(this.state.displayMessage)
+      this.informationMessage(this.state.displayMessage)
     }
 
     if (this.state.capturedCount >=  MAX_IMAGE_CAPTURES) {
-      return this.informationMessage(this.state.displayMessage)
+      this.informationMessage(this.state.displayMessage)
     }
-
+  
     // all good, draw the box
     return detections.map((detection, i) => {
       let _H = detection.box.height + 50;
