@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
 import Webcam from 'react-webcam';
 import { loadModels, getFullFaceDescription } from '../api/face';
+const uuidv4                        = require('uuid/v4')
 
 const WIDTH                         = 600;
 const HEIGHT                        = 600;
 const inputSize                     = 160;
 const FACE_AREA_THRESHOLD           = 35000
 const BRIGHTNESS_THRESHOLD          = 60
+const MAX_IMAGE_CAPTURES            = 3
 const no_face_message               = 'please bring your face near to camera'
 const less_face_area_message        = 'please come near to camera, looks like you are bit from the camera'
 const face_out_of_frame_message     = 'your full face is not getting captured, please align'
 const brightness_inadequate_message = 'please enable camera flash or move to a brighter place'
+const capture_complete_message      = 'we have capture the relevant images'
 
 class VideoInput extends Component {
   constructor(props) {
@@ -22,7 +25,9 @@ class VideoInput extends Component {
       match: null,
       facingMode: null,
       displayMessage: null,
-      brightness: 0
+      brightness: 0,
+      capturedImages: [],
+      capturedCount: 0
     };
   }
 
@@ -58,6 +63,10 @@ class VideoInput extends Component {
       ).then(fullDesc => {
         if (!!fullDesc) {
           if(this.processCapturePostProcessing(fullDesc.map(fd => fd.detection))) {
+            // save the appropriate images
+            this.saveCapturedImages(this.webcam.current.getScreenshot())
+
+            // make callback
             if (window.getCapturedImage && {}.toString.call(window.getCapturedImage) === '[object Function]') {
               window.getCapturedImage(this.webcam.current.getScreenshot())
             }
@@ -69,6 +78,34 @@ class VideoInput extends Component {
       });
     }
   };
+
+  saveCapturedImages = (data) => {
+    let { capturedImages, capturedCount } = this.state;
+    if (capturedImages.length < MAX_IMAGE_CAPTURES) {
+      capturedImages.push(data)
+      capturedCount = capturedCount + 1
+
+      this.setState({
+        capturedImages: capturedImages,
+        capturedCount: capturedCount,
+        displayMessage: capture_complete_message
+      })
+    }
+  }
+
+  renderImageURL = () => {
+    if (this.state.capturedCount >= 3) {
+      return(
+        <div>
+          {this.state.capturedImages.map(image => <a key={uuidv4()} download={`${uuidv4()}.jpeg`} href={image}> Download </a>)}
+        </div>
+      )
+    } else {
+      return (
+        <div></div>
+      )
+    }
+  }
 
   processImageBrightness = () => {
     let canvas    = this.webcam.current.getCanvas();
@@ -146,20 +183,24 @@ class VideoInput extends Component {
   }
 
   debugMessage = (detections) => {
-    if (!detections || (detections && detections.length === 0)) {
-      return (<p>Camera: front</p>)
-    }
-
-    let box = detections.map((detection, i) => {
-      let _H = detection.box.height + 50;
-      let _W = detection.box.width;
-      let _X = detection.box._x;
-      let _Y = detection.box._y - 80;
-      return {
-        H: _H, W: _W, X: _X, Y: _Y, A: detection.box.area
+    if (this.state.capturedCount >= 3) {
+      return this.renderImageURL()
+    } else {
+      if (!detections || (detections && detections.length === 0)) {
+        return (<p>Camera: front</p>)
       }
-    })
-    return <p>H: {box[0]['H']} W: {box[0]['W']} X: {box[0]['X']} Y: {box[0]['Y']} A: {box[0]['A']} B: {this.state.brightness}</p>
+  
+      let box = detections.map((detection, i) => {
+        let _H = detection.box.height + 50;
+        let _W = detection.box.width;
+        let _X = detection.box._x;
+        let _Y = detection.box._y - 80;
+        return {
+          H: _H, W: _W, X: _X, Y: _Y, A: detection.box.area
+        }
+      })
+      return <p>H: {box[0]['H']} W: {box[0]['W']} X: {box[0]['X']} Y: {box[0]['Y']} A: {box[0]['A']} B: {this.state.brightness}</p>
+    }
   }
 
   renderDetectionMessages = (detections) => {
@@ -189,6 +230,10 @@ class VideoInput extends Component {
       return this.informationMessage(this.state.displayMessage)
     }
 
+    if (this.state.capturedCount >=  MAX_IMAGE_CAPTURES) {
+      return this.informationMessage(this.state.displayMessage)
+    }
+
     // all good, draw the box
     return detections.map((detection, i) => {
       let _H = detection.box.height + 50;
@@ -214,6 +259,7 @@ class VideoInput extends Component {
   }
 
   render() {
+    console.log(this.state)
     const { detections, facingMode } = this.state;
     let videoConstraints = null;
     if (!!facingMode) {
