@@ -2,10 +2,15 @@ import React, { Component } from 'react';
 import Webcam from 'react-webcam';
 import { loadModels, getFullFaceDescription } from '../api/face';
 
-const WIDTH = 600;
-const HEIGHT = 600;
-const inputSize = 160;
-const FACE_AREA_THRESHOLD = 70000
+const WIDTH                         = 600;
+const HEIGHT                        = 600;
+const inputSize                     = 160;
+const FACE_AREA_THRESHOLD           = 35000
+const BRIGHTNESS_THRESHOLD          = 60
+const no_face_message               = 'please bring your face near to camera'
+const less_face_area_message        = 'please come near to camera, looks like you are bit from the camera'
+const face_out_of_frame_message     = 'your full face is not getting captured, please align'
+const brightness_inadequate_message = 'please enable camera flash or move to a brighter place'
 
 class VideoInput extends Component {
   constructor(props) {
@@ -16,7 +21,8 @@ class VideoInput extends Component {
       detections: null,
       match: null,
       facingMode: null,
-      displayMessage: null
+      displayMessage: null,
+      brightness: 0
     };
   }
 
@@ -64,11 +70,26 @@ class VideoInput extends Component {
     }
   };
 
+  processImageBrightness = () => {
+    let canvas    = this.webcam.current.getCanvas();
+    let ctx       = canvas.getContext('2d');
+    var imageData = ctx.getImageData(0,0,canvas.width,canvas.height);
+    var data      = imageData.data;
+
+    var r = 0, g = 0, b = 0, avg = 0, colorSum = 0;
+
+    for(var x = 0, len = data.length; x < len; x+=4) {
+        r     = data[x];
+        g     = data[x+1];
+        b     = data[x+2];
+        avg   = Math.floor((r+g+b)/3);
+        colorSum += avg;
+    }
+    var brightness = Math.floor(colorSum / (canvas.width * canvas.height));
+    return brightness
+  }
+
   processCapturePostProcessing = (detections) => {
-    let no_face_message             = 'please bring your face near to camera'
-    let less_face_area_message      = 'please come near to camera, looks like you are bit from the camera'
-    let face_out_of_frame_message   = 'your full face is not getting captured, please align'
-  
     if (!detections || (detections && detections.length === 0)) {
       this.setState({
         displayMessage: no_face_message
@@ -95,6 +116,18 @@ class VideoInput extends Component {
     if (parseFloat(box[0]['A']) < FACE_AREA_THRESHOLD) {
       this.setState({
         displayMessage: less_face_area_message
+      })
+      return false
+    }
+
+    let brightness = this.processImageBrightness()
+    this.setState({
+      brightness: brightness
+    })
+    if ( brightness > BRIGHTNESS_THRESHOLD) {
+    } else {
+      this.setState({
+        displayMessage: brightness_inadequate_message
       })
       return false
     }
@@ -126,14 +159,10 @@ class VideoInput extends Component {
         H: _H, W: _W, X: _X, Y: _Y, A: detection.box.area
       }
     })
-    console.log(box[0])
-
-    return <p>H: {box[0]['H']} W: {box[0]['W']} X: {box[0]['X']} Y: {box[0]['Y']} A: {box[0]['A']}</p>
-
+    return <p>H: {box[0]['H']} W: {box[0]['W']} X: {box[0]['X']} Y: {box[0]['Y']} A: {box[0]['A']} B: {this.state.brightness}</p>
   }
 
   renderDetectionMessages = (detections) => {
-
     if (!detections || (detections && detections.length === 0)) {
       return this.informationMessage(this.state.displayMessage)
     }
@@ -153,6 +182,10 @@ class VideoInput extends Component {
     }
 
     if (parseFloat(box[0]['A']) < FACE_AREA_THRESHOLD) {
+      return this.informationMessage(this.state.displayMessage)
+    }
+
+    if (this.state.brightness !== 0 && this.state.displayMessage != null) {
       return this.informationMessage(this.state.displayMessage)
     }
 
