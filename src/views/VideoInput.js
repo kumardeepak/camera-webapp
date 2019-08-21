@@ -3,8 +3,8 @@ import Webcam from 'react-webcam';
 import { loadModels, getFullFaceDescription } from '../api/face';
 const uuidv4                        = require('uuid/v4')
 
-const WIDTH                         = 600;
-const HEIGHT                        = 600;
+const WIDTH                         = 420;
+const HEIGHT                        = 420;
 const inputSize                     = 160;
 const FACE_AREA_THRESHOLD           = 35000
 const BRIGHTNESS_THRESHOLD          = 60
@@ -186,24 +186,26 @@ class VideoInput extends Component {
   }
 
   debugMessage = (detections) => {
-    if (this.state.capturedCount >= MAX_IMAGE_CAPTURES) {
-      return this.renderImageURL()
-    } else {
-      if (!detections || (detections && detections.length === 0)) {
-        return (<p>Camera: front</p>)
-      }
+    return (<p>   </p>)
 
-      let box = detections.map((detection, i) => {
-        let _H = detection.box.height + 50;
-        let _W = detection.box.width;
-        let _X = detection.box._x;
-        let _Y = detection.box._y - 80;
-        return {
-          H: _H, W: _W, X: _X, Y: _Y, A: detection.box.area
-        }
-      })
-      return <p>H: {box[0]['H']} W: {box[0]['W']} X: {box[0]['X']} Y: {box[0]['Y']} A: {box[0]['A']} B: {this.state.brightness}</p>
-    }
+    // if (this.state.capturedCount >= MAX_IMAGE_CAPTURES) {
+    //   return this.renderImageURL()
+    // } else {
+    //   if (!detections || (detections && detections.length === 0)) {
+    //     return (<p>Camera: front</p>)
+    //   }
+
+    //   let box = detections.map((detection, i) => {
+    //     let _H = detection.box.height + 50;
+    //     let _W = detection.box.width;
+    //     let _X = detection.box._x;
+    //     let _Y = detection.box._y - 80;
+    //     return {
+    //       H: _H, W: _W, X: _X, Y: _Y, A: detection.box.area
+    //     }
+    //   })
+    //   return <p>H: {box[0]['H']} W: {box[0]['W']} X: {box[0]['X']} Y: {box[0]['Y']} A: {box[0]['A']} B: {this.state.brightness}</p>
+    // }
   }
 
   renderDetectionMessages = (detections) => {
